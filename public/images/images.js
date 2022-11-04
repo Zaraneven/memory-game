@@ -1,0 +1,18 @@
+import android from './android.png'
+import css from './css.png'
+import git from './git.png'
+import html from './html.png'
+import java from './java.png'
+import linux from './linux.png'
+import mocha from './mocha.png'
+import javascript from './javascript.png'
+import mongo from './mongo.png'
+import node from './node.png'
+import paragon from './paragon.png'
+import drupal from './drupal.png'
+import docker from './docker.png'
+import github from './github.png'
+import vue from './vue.png'
+import mysql from './mysql.png'
+
+export const images = [android, css, git, github, node, paragon, docker, vue, mysql, mongo, drupal, mocha, linux, html, java, javascript]

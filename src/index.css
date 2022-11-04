@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800&display=swap");
+
+/* base styles */
+body {
+  font-family: Raleway, sans-serif;
+  margin: 0;
+  font-size: 1.5em;
+  text-align: center;
+  background: #1b1523;
+  color: #fff;
+}
+
+.odal {
+  width: 600px;
+  height: 400px;
+  text-align: center;
+  background: #1b1523;
+  border: 2px solid black;
+  justify-content: center;
+  position: absolute;
+  left: 30%;
+  top: 25%;
+  
+}
+.hist {
+  float: left;
+}
+
+.history {
+  display: inline;
+  font-size: 18px;
+  margin-left: 5px;
+  color: white;
+}
+
+.table {
+  border: 5px solid forestgreen;
+  width: 800px;
+  height: 200px;
+}
+  
+th {
+  border-bottom: 1px solid white;
+}
+  
+td {
+  text-align: center;
+}
+
+button {
+  background: none;
+  border: 2px solid #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #c23866;
+  color: #fff;
+}
+
+.inp {
+  width: 200px;
+  height: 20px;
+}
+
+@media screen and (max-width: 900px) {
+  .table {
+    width: 410px;
+  }
+  .odal {
+    position: relative;
+    width: 400px;
+    float: left;
+    left: 2px;
+  }
+}

@@ -35,7 +35,7 @@ body {
 
 .table {
   border: 5px solid forestgreen;
-  width: 800px;
+  width: 600px;
   height: 200px;
 }
   
@@ -69,6 +69,18 @@ button:hover {
   height: 20px;
 }
 
+.modal {
+  width: 400px;
+  height: 200px;
+  text-align: center;
+  background: #1b1523;
+  border: 2px solid black;
+  justify-content: center;
+  position: absolute;
+  left: 36%;
+  top: 25%;
+}
+
 @media screen and (max-width: 900px) {
   .table {
     width: 410px;
@@ -77,6 +89,10 @@ button:hover {
     position: relative;
     width: 400px;
     float: left;
+    left: 2px;
+  }
+  .modal {
+    width: 400px;
     left: 2px;
   }
 }

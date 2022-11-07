@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
+import NextLevel from "./components/NextLevel";
 import Card from "./components/Card";
 import EndGame from "./components/EndGame";
-
 
 const cardImages = [
   { src: "./images/android.png", matched: false },
@@ -38,7 +37,6 @@ const cardImages = [
   { src: "/images/visualstudio.png", matched: false },
   { src: "/images/slack.png", matched: false },
   { src: "/images/angular.png", matched: false },
-
 ];
 
 function App() {
@@ -52,15 +50,16 @@ function App() {
   const level3 = getMultipleRandom(cardImages, 8);
   const level4 = getMultipleRandom(cardImages, 16);
 
-  const [gameMode, setGameMode] = useState([]);
+  const [gameMode, setGameMode] = useState(level1);
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
-  
+  const [next, setNext] = useState(0);
+  const [msg, setMsg] = useState("Level 1");
+
   const match = cards.every((item) => item.matched === true);
-  
 
   const shuffleCards = () => {
     const shuffledCards = [...gameMode, ...gameMode]
@@ -71,7 +70,7 @@ function App() {
     setChoiceOne(null);
     setChoiceTwo(null);
     setCards(shuffledCards);
-    setTurns(0);
+
     //localStorage.clear()
   };
 
@@ -86,6 +85,7 @@ function App() {
         setCards((prevCards) => {
           return prevCards.map((card) => {
             if (card.src === choiceOne.src) {
+              setNext(next + 1);
               return { ...card, matched: true };
             } else {
               return card;
@@ -99,33 +99,51 @@ function App() {
     }
   }, [choiceOne, choiceTwo]);
 
+  useEffect(() => {
+    if (next === 2) {
+      setGameMode(level2);
+      setMsg("Level 2");
+    } else if (next === 6) {
+      setGameMode(level3);
+      setMsg("Level 3");
+    } else if (next === 12) {
+      setGameMode(level4);
+
+      setMsg("Level 4");
+    }
+  }, [next]);
+
+  const restart = () => {
+    setGameMode(level1);
+    setTurns(0);
+    shuffleCards();
+    setNext(0);
+  };
+
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
     setTurns((prevTurns) => prevTurns + 1);
+
     setDisabled(false);
   };
 
   return (
     <div className="App">
       <h1>Memory Game</h1>
-      {cards.length < 3 ? <p>Please choose difficulty Level </p> : ''}
-      {cards.length > 3 ? (<button onClick={shuffleCards}>New Game</button>) : ''}
-      <div>
-        <button onClick={() => (setGameMode(level1), shuffleCards())}>
-          Level 1
-        </button>
-        <button onClick={() => (setGameMode(level2), shuffleCards())}>
-          Level 2
-        </button>
-        <button onClick={() => (setGameMode(level3), shuffleCards())}>
-          Level 3
-        </button>
-        <button onClick={() => (setGameMode(level4), shuffleCards())}>
-          Level 4
-        </button>
-      </div>
-      {cards.length > 3 ? <p>Moves: {turns}</p> : ''}
+
+      {cards.length < 1 ? (
+        <button className="button" onClick={shuffleCards}>Start Game</button>
+      ) : (
+        <button className="button" onClick={restart}>Play Again</button>
+      )}
+
+      {cards.length > 3 ? <p style={{ float: "left" }}>Moves: {turns}</p> : ""}
+      {cards.length > 3 ? (
+        <p style={{ float: "right", marginRight: "60px" }}>{msg}</p>
+      ) : (
+        ""
+      )}
       <div className="card-grid">
         {cards.map((card) => (
           <Card
@@ -140,9 +158,12 @@ function App() {
         ))}
       </div>
       <h2>Best Score :</h2>
-       
-      <EndGame turns={turns} match={match}  
-       shuffleCards={shuffleCards} />
+      <NextLevel next={next} shuffleCards={shuffleCards} />
+      <EndGame
+        turns={turns}
+        shuffleCards={shuffleCards}
+        next={next}
+      />
     </div>
   );
 }

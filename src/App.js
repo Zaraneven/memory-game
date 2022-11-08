@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import NextLevel from "./components/NextLevel";
+
 import Card from "./components/Card";
 import EndGame from "./components/EndGame";
 
@@ -106,17 +106,25 @@ function App() {
     } else if (next === 6) {
       setGameMode(level3);
       setMsg("Level 3");
-    } else if (next === 12) {
+    } else if (next === 14) {
       setGameMode(level4);
 
       setMsg("Level 4");
     }
   }, [next]);
 
+  useEffect(() => {
+    if(gameMode){
+      shuffleCards()
+    }
+  }, [gameMode])
+
   const restart = () => {
+    
+    //shuffleCards();
     setGameMode(level1);
     setTurns(0);
-    shuffleCards();
+    
     setNext(0);
   };
 
@@ -158,11 +166,12 @@ function App() {
         ))}
       </div>
       <h2>Best Score :</h2>
-      <NextLevel next={next} shuffleCards={shuffleCards} />
+      
       <EndGame
         turns={turns}
         shuffleCards={shuffleCards}
         next={next}
+        
       />
     </div>
   );

@@ -46,9 +46,9 @@ function App() {
     return shuffled.slice(0, num);
   }
   const level1 = getMultipleRandom(cardImages, 2);
-  const level2 = getMultipleRandom(cardImages, 4);
-  const level3 = getMultipleRandom(cardImages, 8);
-  const level4 = getMultipleRandom(cardImages, 16);
+  const level2 = getMultipleRandom(cardImages, 8);
+  const level3 = getMultipleRandom(cardImages, 18);
+  const level4 = getMultipleRandom(cardImages, 32);
 
   const [gameMode, setGameMode] = useState(level1);
   const [cards, setCards] = useState([]);
@@ -58,8 +58,7 @@ function App() {
   const [disabled, setDisabled] = useState(false);
   const [next, setNext] = useState(0);
   const [msg, setMsg] = useState("Level 1");
-
-  const match = cards.every((item) => item.matched === true);
+  const [squares, setSquares] = useState(2);
 
   const shuffleCards = () => {
     const shuffledCards = [...gameMode, ...gameMode]
@@ -70,15 +69,18 @@ function App() {
     setChoiceOne(null);
     setChoiceTwo(null);
     setCards(shuffledCards);
-
-    //localStorage.clear()
   };
 
   const handleChoice = (card) => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
+  console.log(cards);
+
   useEffect(() => {
+    if (choiceOne || choiceTwo) {
+      setTurns((prevTurns) => prevTurns + 1);
+    }
     if (choiceOne && choiceTwo) {
       setDisabled(true);
       if (choiceOne.src === choiceTwo.src) {
@@ -93,67 +95,89 @@ function App() {
           });
         });
         resetTurn();
-      } else {
+      }
+       else {
         setTimeout(() => resetTurn(), 1000);
       }
     }
+    // eslint-disable-next-line
   }, [choiceOne, choiceTwo]);
 
   useEffect(() => {
     if (next === 2) {
       setGameMode(level2);
       setMsg("Level 2");
-    } else if (next === 6) {
+      setSquares(4);
+    } else if (next === 10) {
       setGameMode(level3);
       setMsg("Level 3");
-    } else if (next === 14) {
+      setSquares(6);
+    } else if (next === 28) {
       setGameMode(level4);
-
+      setSquares(8);
       setMsg("Level 4");
     }
+    // eslint-disable-next-line
   }, [next]);
 
   useEffect(() => {
-    if(gameMode){
-      shuffleCards()
+    if (gameMode) {
+      shuffleCards();
     }
-  }, [gameMode])
+    // eslint-disable-next-line
+  }, [gameMode]);
 
   const restart = () => {
-    
     //shuffleCards();
     setGameMode(level1);
     setTurns(0);
-    
+
     setNext(0);
+    window.location.reload();
   };
 
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setTurns((prevTurns) => prevTurns + 1);
 
     setDisabled(false);
   };
 
+  const arr = Array(squares ** 2).concat(cards);
+  const gridSize = "1fr ".repeat(squares);
+
+  console.log(cards);
   return (
     <div className="App">
       <h1>Memory Game</h1>
 
       {cards.length < 1 ? (
-        <button className="button" onClick={shuffleCards}>Start Game</button>
+        <button className="button" onClick={shuffleCards}>
+          Start Game
+        </button>
       ) : (
-        <button className="button" onClick={restart}>Play Again</button>
+        <button className="button" onClick={restart}>
+          Play Again
+        </button>
       )}
 
       {cards.length > 3 ? <p style={{ float: "left" }}>Moves: {turns}</p> : ""}
       {cards.length > 3 ? (
-        <p style={{ float: "right", marginRight: "60px" }}>{msg}</p>
+        <p style={{ float: "right", marginRight: "50px" }}>{msg}</p>
       ) : (
         ""
       )}
-      <div className="card-grid">
-        {cards.map((card) => (
+      <div
+        className="card-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: gridSize,
+          gridTemplateRows: gridSize,
+          width: "450px",
+          maxHeight: "450px",
+        }}
+      >
+        {arr.map((card) => (
           <Card
             key={card.id}
             card={card}
@@ -165,14 +189,9 @@ function App() {
           />
         ))}
       </div>
-      <h2>Best Score :</h2>
-      
-      <EndGame
-        turns={turns}
-        shuffleCards={shuffleCards}
-        next={next}
-        
-      />
+      <h2>Top 10 players:</h2>
+
+      <EndGame turns={turns} shuffleCards={shuffleCards} next={next} />
     </div>
   );
 }

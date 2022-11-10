@@ -1,25 +1,27 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
-
+const initalVal = Array(10).fill({ name: 'Unknown', score: 9999})
 const EndGame = ({ turns, next }) => {
   const [open, setOpen] = useState(false);
   const [player, setPlayer] = useState("");
   const [name, setName] = useState("");
-  const [highScore, setHighScore] = useState(() => {
-    return JSON.parse(localStorage.getItem("highScore")) || [];
-  });
+  const [highScore, setHighScore] = useState(() => { return JSON.parse(localStorage.getItem("highScore", initalVal))});
   const [playerScore, setPlayerScore] = useState();
 
+  
+  
   localStorage.setItem("highScore", JSON.stringify([...highScore]));
   var storedSCores = localStorage.getItem("highScore");
   var resultObj = JSON.parse(storedSCores);
+  
   useEffect(() => {
-    if (next === 30) {
+    if (next === 60) {
       setOpen(true);
       setPlayerScore(turns);
-      //shuffleCards();
+      
     }
+    // eslint-disable-next-line
   }, [next]);
 
   const handle = () => {
@@ -30,6 +32,7 @@ const EndGame = ({ turns, next }) => {
       localStorage.setItem("player", player);
       setOpen(false);
       updateScore();
+      
     }
   };
 
@@ -65,13 +68,13 @@ const EndGame = ({ turns, next }) => {
           type="text"
         />
         <p className="validation">{name}</p>
-        <button onClick={handle}>Submit </button>
-        <button onClick={close}>Close</button>
+        <button className="btn2" onClick={handle}>Submit </button>
+        <button className="btn2" onClick={close}>Close</button>
       </Modal>
       <div>
         <table className="table">
           <tr>
-            <th>Name</th>
+            <th >Name</th>
             <th>Score</th>
             <th>Date</th>
           </tr>

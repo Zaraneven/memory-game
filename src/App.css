@@ -5,10 +5,10 @@
 
 button {
     background: none;
-    border: 2px solid #fff;
+    border: 2px solid black;
     padding: 6px 12px;
     border-radius: 4px;
-    color: #fff;
+    color: black;
     cursor: pointer;
     font-size: 1em;
     margin-left: 10px;
@@ -21,12 +21,8 @@ button:hover {
 }
 
 .card-grid {
-    
-    
     margin-top: 40px;
-    display: grid;
-    grid-template-columns: auto auto auto auto ;
-    grid-gap: 5px;
+    margin-left: 90px;
 }
 
 table {
@@ -41,6 +37,13 @@ table {
     
   td {
     text-align: center;
+  }
+
+  @media screen and (max-width: 700px){
+    .card-grid{
+      width: 380px !important;
+      margin-left: 0px;
+    }
   }
 
   

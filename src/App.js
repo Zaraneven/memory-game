@@ -104,6 +104,7 @@ function App() {
   }, [choiceOne, choiceTwo]);
 
   useEffect(() => {
+    setTimeout(() => {
     if (next === 2) {
       setGameMode(level2);
       setMsg("Level 2");
@@ -117,6 +118,7 @@ function App() {
       setSquares(8);
       setMsg("Level 4");
     }
+  }, 2000)
     // eslint-disable-next-line
   }, [next]);
 

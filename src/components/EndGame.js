@@ -1,28 +1,31 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
-const initalVal = Array(10).fill({ name: 'Unknown', score: 9999})
+const initalVal = Array(10).fill({ name: "Unknown", score: 9999 });
 const EndGame = ({ turns, next }) => {
   const [open, setOpen] = useState(false);
   const [player, setPlayer] = useState("");
   const [name, setName] = useState("");
-  const [highScore, setHighScore] = useState(() => { return JSON.parse(localStorage.getItem("highScore", initalVal))});
+  const [highScore, setHighScore] = useState(() => {
+    const savedItem = localStorage.getItem("highScore");
+    const parsedItem = JSON.parse(savedItem);
+    return parsedItem || initalVal;
+  });
   const [playerScore, setPlayerScore] = useState();
 
-  
-  
-  localStorage.setItem("highScore", JSON.stringify([...highScore]));
-  var storedSCores = localStorage.getItem("highScore");
-  var resultObj = JSON.parse(storedSCores);
-  
   useEffect(() => {
+    setTimeout(() => {
     if (next === 60) {
       setOpen(true);
       setPlayerScore(turns);
-      
     }
+  }, 1500)
     // eslint-disable-next-line
   }, [next]);
+
+  useEffect(() => {
+    localStorage.setItem("highScore", JSON.stringify(highScore));
+  }, [highScore]);
 
   const handle = () => {
     if (player === "") {
@@ -32,7 +35,6 @@ const EndGame = ({ turns, next }) => {
       localStorage.setItem("player", player);
       setOpen(false);
       updateScore();
-      
     }
   };
 
@@ -48,12 +50,14 @@ const EndGame = ({ turns, next }) => {
         minute: new Date().getMinutes(),
       },
     ];
+
     setHighScore(newScore);
   }
 
   function close() {
     setOpen(false);
   }
+
   return (
     <div>
       <Modal className="odal" isOpen={open}>
@@ -68,17 +72,22 @@ const EndGame = ({ turns, next }) => {
           type="text"
         />
         <p className="validation">{name}</p>
-        <button className="btn2" onClick={handle}>Submit </button>
-        <button className="btn2" onClick={close}>Close</button>
+        <button className="btn2" onClick={handle}>
+          Submit{" "}
+        </button>
+        <button className="btn2" onClick={close}>
+          Close
+        </button>
       </Modal>
       <div>
         <table className="table">
+          <tbody>
           <tr>
-            <th >Name</th>
+            <th>Name</th>
             <th>Score</th>
             <th>Date</th>
           </tr>
-          {resultObj
+          {highScore
             .sort((a, b) => {
               return a.score - b.score;
             })
@@ -94,6 +103,7 @@ const EndGame = ({ turns, next }) => {
                 </tr>
               );
             })}
+            </tbody>
         </table>
       </div>
     </div>

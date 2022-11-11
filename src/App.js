@@ -95,8 +95,7 @@ function App() {
           });
         });
         resetTurn();
-      }
-       else {
+      } else {
         setTimeout(() => resetTurn(), 1000);
       }
     }
@@ -105,20 +104,20 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => {
-    if (next === 2) {
-      setGameMode(level2);
-      setMsg("Level 2");
-      setSquares(4);
-    } else if (next === 10) {
-      setGameMode(level3);
-      setMsg("Level 3");
-      setSquares(6);
-    } else if (next === 28) {
-      setGameMode(level4);
-      setSquares(8);
-      setMsg("Level 4");
-    }
-  }, 2000)
+      if (next === 2) {
+        setGameMode(level2);
+        setMsg("Level 2");
+        setSquares(4);
+      } else if (next === 10) {
+        setGameMode(level3);
+        setMsg("Level 3");
+        setSquares(6);
+      } else if (next === 28) {
+        setGameMode(level4);
+        setSquares(8);
+        setMsg("Level 4");
+      }
+    }, 1500);
     // eslint-disable-next-line
   }, [next]);
 
@@ -133,7 +132,6 @@ function App() {
     //shuffleCards();
     setGameMode(level1);
     setTurns(0);
-
     setNext(0);
     window.location.reload();
   };
